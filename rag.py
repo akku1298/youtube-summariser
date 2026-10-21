@@ -94,7 +94,7 @@ if youtube_url:
             chunks = splitter.create_documents([transcript])
 
         with st.spinner("Creating embeddings..."):
-            embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+            embeddings = GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
             vector_store = FAISS.from_documents(chunks, embeddings)
             st.success("Video processed successfully! 🎉")
             retriever = vector_store.as_retriever(search_type="similarity", search_kwargs={"k": 4})
