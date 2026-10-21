@@ -1,0 +1,7 @@
+streamlit
+youtube-transcript-api
+langchain-text-splitters
+langchain-google-genai
+langchain-community
+langchain-core
+python-dotenv
