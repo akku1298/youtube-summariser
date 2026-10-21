@@ -39,15 +39,23 @@ if youtube_url:
         with st.spinner("Getting transcript..."):
             try:
                 ytapi = YouTubeTranscriptApi()
-                transcript_file = ytapi.fetch(video_id, languages=["en"])
+                try:
+                    transcript_file = ytapi.fetch(video_id, languages=["en"])
+                except Exception:
+                    transcript_list = ytapi.list(video_id)
+                    transcript_file = transcript_list.find_transcript(['en']).fetch()
+
                 transcript = " ".join(
-                chunk.text if hasattr(chunk, "text") else chunk["text"]
-                for chunk in transcript_file
+                    chunk.text if hasattr(chunk, "text") else chunk["text"]
+                    for chunk in transcript_file
                 )
                 st.success("Transcript loaded!")
 
             except TranscriptsDisabled:
                 st.error("This video does not have captions.")
+                st.stop()
+            except Exception:
+                st.error("No transcript found for this video. Try a different YouTube URL with captions enabled.")
                 st.stop()
 
         with st.spinner("Creating document chunks..."):
